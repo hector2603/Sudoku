@@ -17,16 +17,7 @@ public class EjemploLista {
      * Creates a new instance of <code>UsaLista</code>.
      */
     public EjemploLista() {
-    	listica=new Lista();
-    	listica.listInsert(new Nodo(25));
-    	listica.listInsert(new Nodo(48));
-    	listica.listInsert(new Nodo(12));
-    	listica.listInsert(new Nodo(67));
-    	listica.listDisplay();
-    	Nodo y = listica.listSearch(48);
-    	System.out.println(y+"  "+y.getKey());
-    	listica.listDelete(y);
-    	listica.listDisplay();
+
     }
 
     /**

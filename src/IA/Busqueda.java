@@ -17,7 +17,8 @@ public class Busqueda {
 		int[][] t4 = {{0,0,0,4},{0,0,3,0},{0,2,0,0},{1,0,0,0}};
 		int[][] t5 = {{0,0,0,0},{0,3,4,0},{4,0,2,0},{0,2,0,0}};// este es el que más se demora en encontrar la solución
 		int[][] t6 = {{5,9,0,2,0,0,0,0,7},{0,7,0,5,8,0,3,0,1},{0,1,0,0,7,0,0,5,0},{8,0,0,0,4,0,5,1,0},{2,0,0,0,0,1,0,0,6},{0,6,5,0,3,7,0,0,8},{0,8,0,0,9,0,0,2,0},{3,0,1,0,6,8,0,7,0},{9,0,0,0,0,3,0,8,4}};
-		Tablero tablerito = new Tablero(t6);
+		int[][] t7 = {{5,9,3,2,1,4,8,6,7},{4,7,2,5,8,6,3,9,1},{6,1,8,3,7,9,4,5,2},{8,3,7,6,4,2,5,1,0},{2,0,0,0,0,1,0,0,6},{0,6,5,0,3,7,0,0,8},{0,8,0,0,9,0,0,2,0},{3,0,1,0,6,8,0,7,0},{9,0,0,0,0,3,0,8,4}};
+		Tablero tablerito = new Tablero(t7);
 		Busqueda buscadorcito = new Busqueda(tablerito);
 		buscadorcito.EmpezarBusqueda();
 		// después de haber encontrado la solucion
@@ -56,6 +57,8 @@ public class Busqueda {
 		System.out.println("Valor heuristica inicial: "+heuristica.h(tablerito));
 		System.out.println("Tablero Inicial: ");
 		tablerito.printNumeros(tablerito.getTableroNumeros());
+		//System.out.println("\n imprimir estaticos: \n");
+		//tablerito.printEstaticos();
 		listaPrioridad.InsertarTablero(tablerito);
 		/*
 		System.out.println(tablerito.getH());
@@ -70,7 +73,6 @@ public class Busqueda {
 		Nodo head = null;
 		Tablero tableroPadre = null;
 		Tablero tableroHijo = null;
-		Tablero auxiliar = new Tablero(tablerito);
 		/*System.out.println("altuda de tablero auxiliar \t"+tableroAux.getAltura());
 		System.out.println("altuda de tablero \t"+tablerito.getAltura());
 		tableroAux.setAltura(5);
@@ -109,14 +111,13 @@ public class Busqueda {
 					if(!tableroEstaticos[i][j]){
 						contadorCreados++;
 						tableroHijo = new Tablero(tableroPadre);
-						disponible = tableroHijo.ComprobarDisponbilidad(auxiliar.getDominioTotal(), fila, columna, tableroHijo.getTableroNumeros()[i][j]);
+						disponible = tableroHijo.ComprobarDisponbilidad(tableroHijo.getDominioTotal(), fila, columna, tableroHijo.getTableroNumeros()[i][j]);
 						//System.out.println("disponible:    "+disponible);
 						//System.out.println("igualando las matrices    "+resul );
 						/*if(resul){
 							disponible = tableroHijo.ComprobarDisponbilidad(auxiliar.getDominioTotal(), fila, columna, tableroHijo.getTableroNumeros()[i][j]);
 							System.out.println("compribando disponibilidad             :  "+disponible);
 						}*/
-						tableroHijo.getTableroEstaticos()[fila][columna]=true;
 						tableroHijo.setAltura(tableroHijo.getAltura()+1);
 						tableroHijo.setG(tableroHijo.getG()+1);
 						valorAux = tableroHijo.getTableroNumeros()[fila][columna];
@@ -128,6 +129,8 @@ public class Busqueda {
 						tableroHijo.getTableroNumeros()[i][j]=valorAux;
 						//System.out.println("valor en la posicion evaluando después de cambiar:  "+tableroHijo.getTableroNumeros()[i][j]);
 						heuristica.h(tableroHijo);
+						tableroHijo.getTableroEstaticos()[fila][columna]=true;
+						tableroHijo.ActualizarDominio(fila, columna, tableroHijo.getTableroNumeros()[fila][columna]);
 						//System.out.println(tableroHijo.getSumaHG());
 						//System.out.println("imprimir tablero, evaluando la casilla: "+fila+" "+columna);
 						//tableroHijo.printNumeros(tableroHijo.getTableroNumeros());

@@ -16,6 +16,7 @@ public class Tablero {
 	
 	public static void main(String[] args) {
 		int[][] t = {{5,9,0,2,0,0,0,0,7},{0,7,0,5,8,0,3,0,1},{0,1,0,0,7,0,0,5,0},{8,0,0,0,4,0,5,1,0},{2,0,0,0,0,1,0,0,6},{0,6,5,0,3,7,0,0,8},{0,8,0,0,9,0,0,2,0},{3,0,1,0,6,8,0,7,0},{9,0,0,0,0,3,0,8,4}};
+		int[][] t2 = {{5,9,3,2,1,4,8,6,7},{4,7,2,5,8,6,3,9,1},{6,1,8,3,7,9,4,5,2},{8,3,7,6,4,2,5,1,9},{2,4,9,8,5,1,7,3,6},{1,6,5,9,3,7,2,4,8},{7,8,4,1,9,5,6,2,3},{3,2,1,4,6,8,9,7,5},{9,5,6,7,0,3,0,8,4}};
 		Tablero tablerito = new Tablero(t);
 		System.out.println("Tablero de Numeros");
 		tablerito.printNumeros(tablerito.getTableroNumeros());
@@ -26,6 +27,7 @@ public class Tablero {
 		System.out.println("Dominio de las Columnas");
 		tablerito.printNumeros(tablerito.getDominioColumnas());
 		System.out.println("Dominio de los cuadrados");
+		//tablerito.ActualizarDominio(7,6,5);
 		tablerito.printNumeros(tablerito.getDominioCuadros());
 		System.out.println("Dominio de cada casilla");
 		tablerito.printNumeros(tablerito.getDominioTotal());
@@ -96,7 +98,7 @@ public class Tablero {
 	public void printNumeros(int[][]t){ // funcion auxiliar para imprimir matrices 
 		for (int i = 0; i < t.length; i++) {
 			for (int j = 0; j < t[i].length; j++) {
-				System.out.print(t[i][j]);
+				System.out.print(t[i][j]+"\t");
 			}
 			System.out.println(" ");
 		}
@@ -105,7 +107,7 @@ public class Tablero {
 	public void printEstaticos(){ // funcion auxiliar para imprimir la matriz de booleanos
 		for (int i = 0; i < tableroEstaticos.length; i++) {
 			for (int j = 0; j < tableroEstaticos[i].length; j++) {
-				System.out.print(tableroEstaticos[i][j]);
+				System.out.print(tableroEstaticos[i][j]+"\t");
 			}
 			System.out.println(" ");
 		}
@@ -177,24 +179,45 @@ public class Tablero {
 		return (int) Math.pow(2, numero);
 	}
 	
-	public void ActualizarDominio(int fila, int columna) {// función que actualiza el dominio de cada posicion del tablero 
-		int numeroCuadrante = ((fila/2)*2)+(columna/2);// variable que guarda el numero del cuadrante de la casilla que se va a actualizar el dominio
+	public void ActualizarDominio(int fila, int columna,int n) {// función que actualiza el dominio de cada posicion del tablero 
+		int numeroCuadrante = ((fila/3)*3)+(columna/3);// variable que guarda el numero del cuadrante de la casilla que se va a actualizar el dominio
 		int f = 0,c = 0;// variables auxiliares para determinar donde comienza el cuadrante 
+		int varActu = ~(ConvertToBinary(n-1));
 		if(numeroCuadrante==0){
 			f = c = 0;
 		}else if(numeroCuadrante == 1){
 			f = 0;
-			c = 2;
+			c = 3;
 		}else if(numeroCuadrante == 2){
-			f = 2;
-			c = 0;
+			f = 0;
+			c = 6;
 		}else if(numeroCuadrante == 3){
-			f = c = 2;
+			f = 3; 
+			c = 0;
+		}else if(numeroCuadrante == 4){
+			f = 3; 
+			c = 3;
+		}else if(numeroCuadrante == 5){
+			f = 3; 
+			c = 6;
+		}else if(numeroCuadrante == 6){
+			f = 6; 
+			c = 0;
+		}else if(numeroCuadrante == 7){
+			f = 6; 
+			c = 3;
+		}else if(numeroCuadrante == 8){
+			f = 6; 
+			c = 6;
 		}
-		for (int i = 0; i < 2; i++) {
-			for (int j = 0; j < 2; j++) {
-				dominioCuadros[f+i][c+j]+=1;
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				dominioTotal[f+i][c+j]=(dominioTotal[f+i][c+j]&varActu);
 			}
+		}
+		for (int i = 0; i < dominioTotal.length; i++) {
+			dominioTotal[f][i]=(dominioTotal[f][i]&varActu);
+			dominioTotal[i][c]=(dominioTotal[i][c]&varActu);
 		}
 		
 		
