@@ -186,13 +186,19 @@ public class Tablero {
 		if(numeroCuadrante==0){
 			f = c = 0;
 		}else if(numeroCuadrante == 1){
+			//f = 0;
+			//c = 2;
 			f = 0;
 			c = 3;
 		}else if(numeroCuadrante == 2){
+			//f = 2;
+			//c = 0;
 			f = 0;
 			c = 6;
 		}else if(numeroCuadrante == 3){
-			f = 3; 
+			//f = 2; 
+			//c = 2;
+			f = 3;
 			c = 0;
 		}else if(numeroCuadrante == 4){
 			f = 3; 
@@ -216,8 +222,8 @@ public class Tablero {
 			}
 		}
 		for (int i = 0; i < dominioTotal.length; i++) {
-			dominioTotal[f][i]=(dominioTotal[f][i]&varActu);
-			dominioTotal[i][c]=(dominioTotal[i][c]&varActu);
+			dominioTotal[fila][i]=(dominioTotal[fila][i]&varActu);
+			dominioTotal[i][columna]=(dominioTotal[i][columna]&varActu);
 		}
 		
 		

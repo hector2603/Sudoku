@@ -41,26 +41,41 @@ public class Heuristica {
 		int[][] dFila = t.getDominioFilas();
 		int[][] dColumnas = t.getDominioColumnas();
 		int[][] dCuadros = t.getDominioCuadros();
-		int sumaF, sumaC, sumaK;
+		boolean sumaF, sumaC, sumaK;
 		for (int i = 0; i < dCuadros.length; i++) {
-			sumaF = sumaC = sumaK = 0;
+			sumaF = sumaC = sumaK = false;
 			for (int j = 0; j < dCuadros[i].length; j++) {
-					sumaF += dFila[i][j];
+					/*sumaF += dFila[i][j];
 					sumaC += dColumnas[i][j];
-					sumaK += dCuadros[i][j];
+					sumaK += dCuadros[i][j];*/
+					if(dFila[i][j]==0){
+						h+=1;
+						sumaF=true;
+						//System.out.println("fila no sumó 10");
+					}
+					if(dColumnas[i][j]==0){
+						sumaC=true;
+						h+=1;
+						//System.out.println("columna no sumó 10");
+					}
+					if(dCuadros[i][j]==0){
+						sumaK=true;
+						h+=1;
+						//System.out.println("cuadrado no sumó 10");
+					}
 			}
-			if(sumaF!=45){
+			/*if(sumaF){
 				h+=1;
 				//System.out.println("fila no sumó 10");
 			}
-			if(sumaC!=45){
+			if(sumaC){
 				h+=1;
 				//System.out.println("columna no sumó 10");
 			}
-			if(sumaK!=45){
+			if(sumaK){
 				h+=1;
 				//System.out.println("cuadrado no sumó 10");
-			}
+			}*/
 		}
 		t.setH(h);
 		return h;
