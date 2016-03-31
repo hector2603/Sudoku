@@ -18,9 +18,12 @@ public class Busqueda {
 		int[][] tp = {{0,1,0,3},{3,0,0,0},{0,0,0,2},{2,0,4,0}};
 		int[][] t5 = {{0,0,0,0},{0,3,4,0},{4,0,2,0},{0,2,0,0}};// este es el que más se demora en encontrar la solución
 		int[][] t6 = {{5,9,0,2,0,0,0,0,7},{0,7,0,5,8,0,3,0,1},{0,1,0,0,7,0,0,5,0},{8,0,0,0,4,0,5,1,0},{2,0,0,0,0,1,0,0,6},{0,6,5,0,3,7,0,0,8},{0,8,0,0,9,0,0,2,0},{3,0,1,0,6,8,0,7,0},{9,0,0,0,0,3,0,8,4}};
-		//int[][] t7 = {{5,9,3,2,1,4,8,6,7},{4,7,2,5,8,6,3,9,1},{6,1,8,3,7,9,4,5,2},{8,3,7,6,4,0,5,1,0},{2,0,0,0,0,1,0,0,6},{0,6,5,0,3,7,0,0,8},{0,8,0,0,9,0,0,2,0},{3,0,1,0,6,8,0,7,0},{9,0,0,0,0,3,0,8,4}};// quitando el último 6 da resultados raros ¿quéééé?
 		int[][] t7 = {{5,9,0,2,0,4,0,0,7},{4,7,0,5,8,0,3,0,1},{0,1,0,0,7,0,0,5,0},{8,0,0,0,4,0,5,1,0},{2,0,0,0,0,1,0,0,6},{0,6,5,0,3,7,0,0,8},{0,8,0,0,9,0,0,2,0},{3,0,1,0,6,8,0,7,0},{9,0,0,0,0,3,0,8,4}};
-		Tablero tablerito = new Tablero(t6);
+		int[][] t8 = {{0,0,0,0,2,8,0,7,0},{0,0,0,3,0,0,0,0,8},{0,0,8,0,0,1,0,0,4},{0,4,0,0,0,0,7,0,6},{0,8,0,7,5,6,0,4,0},{5,0,7,0,0,0,0,1,0},{9,0,0,8,0,0,6,0,0},{8,0,0,0,0,9,0,0,0},{0,2,0,5,4,0,0,0,0}};
+		int[][] t9 = {{0,0,0,0,0,1,0,0,2},{0,0,3,0,0,0,0,4,0},{0,0,5,0,6,0,7,0,0},{4,0,0,7,0,0,2,0,0},{1,0,0,0,0,0,0,0,8},{0,0,6,0,0,2,0,0,9},{0,0,7,0,4,0,5,0,0},{0,9,0,0,0,0,6,0,0},{8,0,0,3,0,0,0,0,0}};
+		int[][] t10 = {{2,0,3,0,0,0,0,0,0},{1,0,0,0,0,6,0,0,0},{9,0,4,3,8,0,5,0,0},{0,0,5,0,0,4,0,0,0},{0,0,6,7,0,3,1,0,0},{0,0,0,2,0,0,8,0,0},{0,0,8,0,5,7,4,0,9},{0,0,0,1,0,0,0,0,6},{6,0,0,0,0,0,7,0,5}};
+		int[][] t11 = {{0,0,8,7,0,0,0,0,5},{0,5,0,9,0,0,0,8,0},{0,0,2,6,0,0,0,7,3},{9,0,0,8,0,0,1,0,0},{0,0,4,0,3,0,5,0,0},{0,0,1,0,2,7,0,0,6},{5,8,0,0,0,1,7,0,0},{0,6,0,0,0,8,0,4,9},{2,4,9,3,7,6,8,5,1}};
+		Tablero tablerito = new Tablero(t9);
 		Busqueda buscadorcito = new Busqueda(tablerito);
 		buscadorcito.EmpezarBusqueda();
 		// después de haber encontrado la solucion
@@ -29,6 +32,7 @@ public class Busqueda {
 		//System.out.println("\n\nTamaño de la lista Final: "+buscadorcito.getListaPrioridad().Tamano());
 		System.out.println("Resultado:");
 		tablerito = buscadorcito.getListaPrioridad().getHead().getKey();
+		System.out.println("Comparación del resultado: "+buscadorcito.listasIguales(tablerito.getTableroNumeros(), null));
 		tablerito.printNumeros(tablerito.getTableroNumeros());
 		System.out.println("Costo total de la solución: "+tablerito.getG());
 		System.out.println("Altura del Árbol: "+tablerito.getAltura());
@@ -54,11 +58,11 @@ public class Busqueda {
 	public Busqueda(Tablero t){
 		tablerito = t;
 		heuristica = new Heuristica();
+		System.out.println("Tablero Inicial: ");
+		tablerito.printNumeros(tablerito.getTableroNumeros());
 		tablerito.LlenarTablero();
 		listaPrioridad = new Lista();
 		System.out.println("Valor heuristica inicial: "+heuristica.h(tablerito));
-		System.out.println("Tablero Inicial: ");
-		tablerito.printNumeros(tablerito.getTableroNumeros());
 		//System.out.println("\n imprimir estaticos: \n");
 		//tablerito.printEstaticos();
 		listaPrioridad.InsertarTablero(tablerito);
@@ -84,7 +88,6 @@ public class Busqueda {
 		boolean[][] tableroEstaticos = null;
 		int fila = 0;// fila de la posicion que se va a comenzar a cambiar 
 		int columna = 0 ; // columna de la posicion que se va a comenzar a cambiar
-		int valorAux = 0; // variable que guarda temporalmente el valor de la casilla que se va a cambiar
 		int contadorCreados = 0;
 		int contadorExpandidos = 0;
 		int contadorDescartados = 0;
@@ -122,14 +125,7 @@ public class Busqueda {
 						}*/
 						tableroHijo.setAltura(tableroHijo.getAltura()+1);
 						tableroHijo.setG(tableroHijo.getG()+1);
-						valorAux = tableroHijo.getTableroNumeros()[fila][columna];
-						//System.out.println("imprimir fila + columna:   "+fila+"    "+columna);
-						//System.out.println("valor de ValorAux: "+ valorAux);
-						//System.out.println("valor en la posicion evaluando antes de cambiar:  "+tableroHijo.getTableroNumeros()[i][j]);
-						tableroHijo.getTableroNumeros()[fila][columna]=tableroHijo.getTableroNumeros()[fila][j];// cambioooo de i por fila
-						//System.out.println("valor en la posicion inicial después de cambiar:  "+tableroHijo.getTableroNumeros()[fila][columna]);
-						tableroHijo.getTableroNumeros()[fila][j]=valorAux;// cambioooo de i por fila
-						//System.out.println("valor en la posicion evaluando después de cambiar:  "+tableroHijo.getTableroNumeros()[i][j]);
+						CambioPos(tableroHijo, fila, columna, j);// función que cambia los números de posicion
 						heuristica.h(tableroHijo);
 						tableroHijo.getTableroEstaticos()[fila][columna]=true;
 						tableroHijo.ActualizarDominio(fila, columna, tableroHijo.getTableroNumeros()[fila][columna]);
@@ -174,16 +170,28 @@ public class Busqueda {
 	}
 	
 	public boolean listasIguales(int[][] a, int[][] b){
-		int[][] respuesta ={{2,4,3,1},{1,3,4,2},{4,1,2,3},{3,2,1,4}};
+		//int[][] respuesta ={{2,4,3,1},{1,3,4,2},{4,1,2,3},{3,2,1,4}};
+		//int[][] respuesta = {{6,9,3,4,2,8,5,7,1},{4,7,1,3,9,5,2,6,8},{2,5,8,6,7,1,3,9,4},{3,4,9,1,8,2,7,5,6},{1,8,2,7,5,6,9,4,3},{5,6,7,9,3,4,8,1,2},{9,3,4,8,1,7,6,2,5},{8,1,5,2,6,9,4,3,7},{7,2,6,5,4,3,1,8,9}}; // respuesta t8
+		//int[][] respuesta = {{7,4,8,5,3,1,9,6,2},{6,1,3,9,2,7,8,4,5},{9,2,5,8,6,4,7,3,1},{4,8,9,7,1,3,2,5,6},{1,3,2,6,5,9,4,7,8},{5,7,6,4,8,2,3,1,9},{2,6,7,1,4,8,5,9,3},{3,9,1,2,7,5,6,8,4},{8,5,4,3,9,6,1,2,7}}; // respuesta t9
+		//int[][] respuesta = {{2,8,3,5,7,9,6,4,1},{1,5,7,4,2,6,9,3,8},{9,6,4,3,8,1,5,7,2},{7,9,5,8,1,4,2,6,3},{8,2,6,7,9,3,1,5,4},{4,3,1,2,6,5,8,9,7},{3,1,8,6,5,7,4,2,9},{5,7,9,1,4,2,3,8,6},{6,4,2,9,3,8,7,1,5}}; // respuesta t10
+		int[][] respuesta = {{3,9,8,7,4,2,6,1,5},{7,5,6,9,1,3,2,8,4},{4,1,2,6,8,5,9,7,3},{9,2,5,8,6,4,1,3,7},{6,7,4,1,3,9,5,2,8},{8,3,1,5,2,7,4,9,6},{5,8,3,4,9,1,7,6,2},{1,6,7,2,5,8,3,4,9},{2,4,9,3,7,6,8,5,1}}; // respuesta t11
 		boolean aux = true;
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < b[i].length; j++) {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < a[i].length; j++) {
 				if(a[i][j]!=respuesta[i][j]){
 					aux = false;
 				}
 			}
 		}
 		return aux;
+	}
+	
+	public void CambioPos(Tablero t, int fila, int columnaI,int columnaF){// función cambio definida para determinar la función para la heuristica 
+		int valorAux = 0; // variable que guarda temporalmente el valor de la casilla que se va a cambiar
+		valorAux = t.getTableroNumeros()[fila][columnaI];
+		t.getTableroNumeros()[fila][columnaI]=t.getTableroNumeros()[fila][columnaF];// cambioooo de i por fila
+		t.getTableroNumeros()[fila][columnaF]=valorAux;// cambioooo de i por fila
+
 	}
 
 	public Tablero getTablerito() {
