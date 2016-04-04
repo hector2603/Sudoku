@@ -45,20 +45,14 @@ public class Lista {
     	return contador;
     }
     
-    public Nodo BuscarPosicion(int sumaHG, int altura){
+    public Nodo BuscarPosicion(double sumaHG, int altura){
     	Nodo x=head;
     	while((x!=null)&&(x.getKey().getSumaHG()<sumaHG)){
-    		//System.out.println(x.getKey().getSumaHG()+" HG "+sumaHG);
     		x = x.getNext();
     	}
     	while(x!=null && x.getKey().getAltura()<=altura && x.getKey().getSumaHG()==sumaHG){
-    		//System.out.println("h1 ");
-    		//System.out.println(x.getKey().getSumaHG()+" h "+sumaHG);
     		x = x.getNext();
-    		//System.out.println(x);
-    		//System.out.println("h");
     	}
-    	//System.out.println("termina de buscar posicion");
     	return x;
     }
     
@@ -117,13 +111,13 @@ public class Lista {
     		head = x.getNext();
     }
     
-    public void listDisplay(){
+   /* public void listDisplay(){ //CREO ESTO SE PUEDE BORRAR
     	Nodo x=head;
     	while(x!=null){
     		x.getKey().printNumeros(x.getKey().getTableroNumeros());
     		System.out.println(" suma GH "+x.getKey().getSumaHG()+" Altura "+x.getKey().getAltura()+"\n");
             x=x.getNext();
     	}
-    }
+    }*/
     
 }

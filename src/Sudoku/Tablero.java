@@ -10,33 +10,10 @@ public class Tablero {
 	private int[][] dominioColumnas;
 	private int[][] dominioCuadros;
 	private int[][] dominioTotal;
-	private int h;
+	private double h;
 	private int g;
 	private int altura;
 	
-	public static void main(String[] args) {
-		int[][] t = {{5,9,0,2,0,0,0,0,7},{0,7,0,5,8,0,3,0,1},{0,1,0,0,7,0,0,5,0},{8,0,0,0,4,0,5,1,0},{2,0,0,0,0,1,0,0,6},{0,6,5,0,3,7,0,0,8},{0,8,0,0,9,0,0,2,0},{3,0,1,0,6,8,0,7,0},{9,0,0,0,0,3,0,8,4}};
-		int[][] t2 = {{5,9,3,2,1,4,8,6,7},{4,7,2,5,8,6,3,9,1},{6,1,8,3,7,9,4,5,2},{8,3,7,6,4,2,5,1,9},{2,4,9,8,5,1,7,3,6},{1,6,5,9,3,7,2,4,8},{7,8,4,1,9,5,6,2,3},{3,2,1,4,6,8,9,7,5},{9,5,6,7,0,3,0,8,4}};
-		Tablero tablerito = new Tablero(t);
-		System.out.println("Tablero de Numeros");
-		tablerito.printNumeros(tablerito.getTableroNumeros());
-		System.out.println("Tablero Estaticos");
-		tablerito.printEstaticos();
-		System.out.println("Dominio de las Filas ");
-		tablerito.printNumeros(tablerito.getDominioFilas());
-		System.out.println("Dominio de las Columnas");
-		tablerito.printNumeros(tablerito.getDominioColumnas());
-		System.out.println("Dominio de los cuadrados");
-		//tablerito.ActualizarDominio(7,6,5);
-		tablerito.printNumeros(tablerito.getDominioCuadros());
-		System.out.println("Dominio de cada casilla");
-		tablerito.printNumeros(tablerito.getDominioTotal());
-		System.out.println("Tablero LLeno con los numeros faltantes");
-		tablerito.LlenarTablero();
-		tablerito.printNumeros(tablerito.getTableroNumeros());
-		System.out.println("");
-		
-	}
 	
 	public Tablero(int[][] t){// constructor de la clase, recibe una matriz que sera los numeros estaticos del tablero
 		tableroNumeros = t;
@@ -91,12 +68,11 @@ public class Tablero {
 		
 		h=t.getH();
 		g=t.getG();
-		altura=t.getAltura();
-		
+		altura=t.getAltura();	
 	}
 	
 	public void printNumeros(int[][]t){ // funcion auxiliar para imprimir matrices 
-		for (int i = 0; i < t.length; i++) {
+		for (int i = 0; i < t.length; i++) { // ESTO CREO QUE LO PODEMOS BORRAR
 			for (int j = 0; j < t[i].length; j++) {
 				System.out.print(t[i][j]+"\t");
 			}
@@ -105,7 +81,7 @@ public class Tablero {
 	}
 	
 	public void printEstaticos(){ // funcion auxiliar para imprimir la matriz de booleanos
-		for (int i = 0; i < tableroEstaticos.length; i++) {
+		for (int i = 0; i < tableroEstaticos.length; i++) {  //ESTO CREO QUE LO PODEMOS BORRAR
 			for (int j = 0; j < tableroEstaticos[i].length; j++) {
 				System.out.print(tableroEstaticos[i][j]+"\t");
 			}
@@ -113,8 +89,26 @@ public class Tablero {
 		}
 	}
 	
+	public boolean verificarSudoku(int [][] tablero){//metodo que sirve para verificar que el sudoku tenga
+		boolean tieneSolucion = true;//solucion por numeros repetidos
+		for(int z=0; z<9; z++){
+			for(int j=0; j<tablero.length; j++){
+				for(int i=0; i<tablero.length-1; i++){//verifica columnas
+					if(tablero[j][z]!=0 && tablero[i][z]!=0 && j!=i && tablero[j][z] == tablero [i][z]){
+						System.out.println(tablero[j][z]+ " = "+ tablero [i][z]);
+						tieneSolucion = false;//verifica filas
+					}if(tablero[z][j]!=0 && tablero[z][i]!=0 && j!=i && tablero[z][j] == tablero [z][i]){
+						System.out.println(tablero[z][j]+ " = "+ tablero [z][i]);
+						tieneSolucion = false;
+					}
+				}
+			}
+		}
+		return tieneSolucion;
+	}
+
+	
 	public void CrearDominioFilas(){ // funcion que identifica los numeros usados en las filas
-		
 		for (int i = 0; i < tableroNumeros.length; i++) {
 			for (int j = 0; j < tableroNumeros[i].length; j++) {
 				if(tableroNumeros[i][j]!=0){
@@ -123,9 +117,9 @@ public class Tablero {
 			}
 		}
 	}
-
+	
+	
 	public void CrearDominioColumnas(){ // funcion que identifica los numeros usados en las columnas
-		
 		for (int i = 0; i < tableroNumeros.length; i++) {
 			for (int j = 0; j < tableroNumeros[i].length; j++) {
 				if(tableroNumeros[j][i]!=0){
@@ -136,7 +130,6 @@ public class Tablero {
 	}
 	
 	public void CrearDominioCuadros(){ // funcion que identifica los numeros usados en los cuadros
-		
 		for (int i = 0; i < tableroNumeros.length; i++) {
 			for (int j = 0; j < tableroNumeros[i].length; j++) {
 				if(tableroNumeros[i][j]!=0){
@@ -161,12 +154,10 @@ public class Tablero {
 	public int InterseccionDominios(int[] f, int[] c, int[] k ){// funcion que hace la interseccion entre los diferentes dominios de una casilla del tablero
 		int aux=0;// variable auxiliar que ira llevando la suma de los valores del dominio 
 		for (int i = 0; i < f.length; i++) {
-			//System.out.println(f[i]+" "+c[i]+" "+k[i]);
 			if(f[i]==0 && c[i]==0 && k[i]==0){
 				aux += ConvertToBinary(i); 
 			}
 		}
-		//System.out.println(aux);
 		return aux;
 	}
 	
@@ -186,18 +177,12 @@ public class Tablero {
 		if(numeroCuadrante==0){
 			f = c = 0;
 		}else if(numeroCuadrante == 1){
-			//f = 0;
-			//c = 2;
 			f = 0;
 			c = 3;
 		}else if(numeroCuadrante == 2){
-			//f = 2;
-			//c = 0;
 			f = 0;
 			c = 6;
 		}else if(numeroCuadrante == 3){
-			//f = 2; 
-			//c = 2;
 			f = 3;
 			c = 0;
 		}else if(numeroCuadrante == 4){
@@ -225,18 +210,15 @@ public class Tablero {
 			dominioTotal[fila][i]=(dominioTotal[fila][i]&varActu);
 			dominioTotal[i][columna]=(dominioTotal[i][columna]&varActu);
 		}
-		
-		
 	}
 	
 	public void setNumero(int numero, int fila, int columna){// asigna un numero a la posicion indicada
 		if(!tableroEstaticos[fila][columna]){
 			tableroNumeros[fila][columna]=numero;
 		}
-		
 	}
 	
-	public void LlenarTablero(){// llena el tablero con lo número que faltan 
+	public void LlenarTablero(){// llena el tablero con los números que faltan 
 		ArrayList<Integer> aux = new ArrayList<Integer>();
 		for (int i = 0; i < dominioFilas.length; i++) {
 			for (int j = 0; j < dominioFilas[i].length; j++) {
@@ -264,12 +246,7 @@ public class Tablero {
 	public boolean ComprobarDisponbilidad(int[][] is, int fila, int columna, int n){
 		boolean aux = false;
 		int a = 0;
-		//System.out.println("n sin convertir:  "+n);
 		a=ConvertToBinary(n-1);
-		//System.out.println("n convertido:  "+a);
-		//System.out.println("dominio en la casilla: "+dominioTotal[fila][columna]);
-		//System.out.println("AND "+(a&dominioTotal[fila][columna])+" pintando matriz dominios:");
-		//printNumeros(dominioTotal);
 		if((a&is[fila][columna])==a){
 			aux = true;
 		}
@@ -277,8 +254,8 @@ public class Tablero {
 	}
 	
 	// getters and setters
-	public int getSumaHG(){
-		return h+g;
+	public double getSumaHG(){
+		return h+(double)g;
 	}
 	
 	public int[][] getTableroNumeros() {
@@ -329,11 +306,11 @@ public class Tablero {
 		this.dominioTotal = dominioTotal;
 	}
 
-	public int getH() {
+	public double getH() {
 		return h;
 	}
 
-	public void setH(int h) {
+	public void setH(double h) {
 		this.h = h;
 	}
 
@@ -352,6 +329,5 @@ public class Tablero {
 	public void setAltura(int altura) {
 		this.altura = altura;
 	}
-	
 
 }
